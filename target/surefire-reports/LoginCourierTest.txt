@@ -1,36 +1,36 @@
 -------------------------------------------------------------------------------
 Test set: LoginCourierTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 123.322 s <<< FAILURE! - in LoginCourierTest
-shouldNotCourierLogInWithoutLog(LoginCourierTest)  Time elapsed: 0.537 s  <<< FAILURE!
+Tests run: 7, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 123.203 s <<< FAILURE! - in LoginCourierTest
+shouldNotCourierLogInWithoutLog(LoginCourierTest)  Time elapsed: 0.505 s  <<< FAILURE!
 java.lang.AssertionError: 
 1 expectation failed.
 Expected status code <200> but was <400>.
 
 	at LoginCourierTest.tearDown(LoginCourierTest.java:34)
 
-shouldNotCourierLogInWithIncorrectLogin(LoginCourierTest)  Time elapsed: 0.517 s  <<< FAILURE!
+shouldNotCourierLogInWithIncorrectLogin(LoginCourierTest)  Time elapsed: 0.449 s  <<< FAILURE!
 java.lang.AssertionError: 
 1 expectation failed.
 Expected status code <200> but was <404>.
 
 	at LoginCourierTest.tearDown(LoginCourierTest.java:34)
 
-shouldNotCourierLogInWithIncorrectPassword(LoginCourierTest)  Time elapsed: 0.429 s  <<< FAILURE!
+shouldNotCourierLogInWithIncorrectPassword(LoginCourierTest)  Time elapsed: 0.499 s  <<< FAILURE!
 java.lang.AssertionError: 
 1 expectation failed.
 Expected status code <200> but was <404>.
 
 	at LoginCourierTest.tearDown(LoginCourierTest.java:34)
 
-shouldNotCourierLogInWithoutPass(LoginCourierTest)  Time elapsed: 120.465 s  <<< FAILURE!
+shouldNotCourierLogInWithoutPass(LoginCourierTest)  Time elapsed: 120.44 s  <<< FAILURE!
 java.lang.AssertionError: 
 1 expectation failed.
 Expected status code <400> but was <504>.
 
 	at LoginCourierTest.shouldNotCourierLogInWithoutPass(LoginCourierTest.java:57)
 
-shouldNotCourierLogInWithoutPass(LoginCourierTest)  Time elapsed: 120.466 s  <<< FAILURE!
+shouldNotCourierLogInWithoutPass(LoginCourierTest)  Time elapsed: 120.441 s  <<< FAILURE!
 java.lang.AssertionError: 
 1 expectation failed.
 Expected status code <200> but was <504>.
