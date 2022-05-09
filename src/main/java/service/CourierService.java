@@ -2,34 +2,42 @@ package service;
 
 import dto.LoginCourierDto;
 import dto.RegisterCourierDto;
-import io.restassured.response.Response;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
-import io.restassured.response.Validatable;
+import io.restassured.response.Response;
 
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static service.RestAssured.getBaseSpec;
 
 public class CourierService {
+    private static final String COURIER_PATH = "api/v1/courier/";
 
-    public static Response register(RegisterCourierDto registerCourierDto) {
+    @Step
+    public static Response registerCourier(RegisterCourierDto registerCourierDto) {
         return given()
+                .spec(getBaseSpec())
                 .contentType(ContentType.JSON)
                 .body(registerCourierDto)
-                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
+                .post(COURIER_PATH);
     }
-    public static Response login(LoginCourierDto loginCourierDto) {
+
+    @Step
+    public static Response loginCourier(LoginCourierDto loginCourierDto) {
         return given()
+                .spec(getBaseSpec())
                 .contentType(ContentType.JSON)
                 .body(loginCourierDto)
-                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
+                .post(COURIER_PATH + "login");
     }
 
-    public static Response delete(int id) {
+    @Step
+    public static Response deleteCourier(int id) {
         return given()
+                .spec(getBaseSpec())
                 .contentType(ContentType.JSON)
                 .body(Map.of("id", id))
-                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/{id}", id);
+                .delete(COURIER_PATH + id);
     }
-
 }

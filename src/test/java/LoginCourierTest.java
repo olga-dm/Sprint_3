@@ -1,11 +1,13 @@
 import dto.LoginCourierDto;
 import dto.RegisterCourierDto;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import service.CourierService;
 import utils.DataGenerator;
 
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 import static utils.DataGenerator.generateLoginCourierDto;
@@ -20,73 +22,78 @@ public class LoginCourierTest {
         courier.setLogin(newUser.getLogin());
         courier.setPassword(newUser.getPassword());
 
-        CourierService.register(newUser)
+        CourierService.registerCourier(newUser)
                 .then().assertThat()
-                .statusCode(201);
+                .statusCode(SC_CREATED);
     }
 
     @After
-    public void after() {
-        int id = CourierService.login(courier)
+    public void tearDown() {
+        int id = CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .extract().path("id");
-        CourierService.delete(id)
+        CourierService.deleteCourier(id)
                 .then().assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("ok", equalTo(true));
     }
 
     @Test
+    @DisplayName("Проверка возможности авторизации")
     public void shouldCourierLogIn() {
-        CourierService.login(courier)
+        CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("id", any(Integer.class));
     }
 
     @Test
+    @DisplayName("Проверка валидации при авторизации без пароля")
     public void shouldNotCourierLogInWithoutPass() {
         courier.setPassword(null);
-        CourierService.login(courier)
+        CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
+    @DisplayName("Проверка валидации при авторизации без логина")
     public void shouldNotCourierLogInWithoutLog() {
         courier.setLogin(null);
-        CourierService.login(courier)
+        CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(400)
+                .statusCode(SC_BAD_REQUEST)
                 .body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
+    @DisplayName("Проверка невозможности авторизации по неверному паролю")
     public void shouldNotCourierLogInWithIncorrectPassword() {
         courier.setPassword(generateLoginCourierDto().getPassword());
-        CourierService.login(courier)
+        CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(404)
+                .statusCode(SC_NOT_FOUND)
                 .body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test
+    @DisplayName("Проверка невозможности авторизации по неверному логину")
     public void shouldNotCourierLogInWithIncorrectLogin() {
         courier.setLogin(generateLoginCourierDto().getLogin());
-        CourierService.login(courier)
+        CourierService.loginCourier(courier)
                 .then().assertThat()
-                .statusCode(404)
+                .statusCode(SC_NOT_FOUND)
                 .body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test
+    @DisplayName("Проверка невозможности авторизации несуществующим пользователем")
     public void shouldNotUnregisteredCourierLogIn() {
-        CourierService.login(DataGenerator.generateLoginCourierDto())
+        CourierService.loginCourier(DataGenerator.generateLoginCourierDto())
                 .then().assertThat()
-                .statusCode(404)
+                .statusCode(SC_NOT_FOUND)
                 .body("message", equalTo("Учетная запись не найдена"));
     }
-
 }
